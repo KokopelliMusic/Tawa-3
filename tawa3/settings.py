@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # dependencies
     'modernrpc',
+    'corsheaders',
     
     # apps
     'user',
@@ -49,6 +50,8 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -142,4 +145,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MODERNRPC_METHODS_MODULES = [
     'playlist.views',
     'user.views'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:8000',
 ]
