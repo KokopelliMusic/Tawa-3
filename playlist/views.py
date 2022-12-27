@@ -161,3 +161,20 @@ def get_number_of_users(playlist_id):
     'song_count': len(songs),
     'user_count': len(unique_users)
   }
+
+
+@rpc_method
+@set_authentication_predicate(is_authenticated)
+def get_playlist_users(playlist_id):
+  songs = Song.objects.filter(playlist=playlist_id)
+
+  if not songs:
+    return []
+
+  unique_users = []
+
+  for song in songs:
+    if song.added_by not in unique_users:
+      unique_users.append(song.added_by)
+
+  return [J(x) for x in unique_users]
