@@ -10,7 +10,7 @@ class AccessTokenMiddleware:
   def __call__(self, request):
     response = self.get_response(request)
 
-    if request.path == '/rpc' or request.path == '/rpc/':
+    if request.method == 'POST' and (request.path == '/rpc' or request.path == '/rpc/'):
       client_type = request.META.get('HTTP_X_KOKOPELLI_CLIENT_TYPE', None)
 
       if not client_type:
