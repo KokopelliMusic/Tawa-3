@@ -5,7 +5,22 @@ from modernrpc.auth import set_authentication_predicate
 from django.contrib.auth import authenticate
 from tawa3.tools import is_authenticated
 
-from user.models import AccessToken
+from user.models import User, AccessToken
+
+@rpc_method
+def register(email, username, password, **kwargs):
+  try:
+    user = User.objects.create_user(email=email, username=username, password=password)
+
+    user.save()
+  except Exception as e:
+    raise Exception('Username and or email already exists')
+
+  # Generate Access Token and store, send it back to the client
+  token = login(username, password, **kwargs)
+
+  return token
+
 
 @rpc_method
 def login(username, password, **kwargs):
@@ -36,3 +51,10 @@ def logout(**kwargs):
     AccessToken.objects.filter(user=user).delete()
     return True
   return False
+
+
+@rpc_method
+@set_authentication_predicate(is_authenticated)
+def get_user(**kwargs):
+  user = kwargs.get('request').user
+  return user.toJSON()
