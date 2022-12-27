@@ -1,3 +1,4 @@
+from django.http import HttpResponseBadRequest
 from user.models import AccessToken
 
 class AccessTokenMiddleware:
@@ -8,6 +9,13 @@ class AccessTokenMiddleware:
 
   def __call__(self, request):
     response = self.get_response(request)
+
+    if request.path == '/rpc' or request.path == '/rpc/':
+      client_type = request.META.get('HTTP_X_KOKOPELLI_CLIENT_TYPE', None)
+
+      if not client_type:
+        return HttpResponseBadRequest('X-Kokopelli-Client-Type header not specified')
+
     return response
 
   def process_view(self, request, view_func, *view_args, **view_kwargs):
