@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
 from django.conf.urls import include
+from django.conf.urls.static import static
 
 from modernrpc.core import JSONRPC_PROTOCOL
 from modernrpc.views import RPCEntryPoint
@@ -26,4 +28,5 @@ urlpatterns = [
     path('user/', include('user.urls')),
     # playlist
     path(r'rpc/', RPCEntryPoint.as_view(enable_doc=True, protocol=JSONRPC_PROTOCOL)),
-]
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
