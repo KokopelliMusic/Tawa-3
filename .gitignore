@@ -1,5 +1,5 @@
 profile_pictures
-tawa3/local_settings.py
+tawa3/settings/production.py
 
 # Django #
 *.log
