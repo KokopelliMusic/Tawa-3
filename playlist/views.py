@@ -178,3 +178,17 @@ def get_playlist_users(playlist_id):
       unique_users.append(song.added_by)
 
   return [J(x) for x in unique_users]
+
+
+@rpc_method
+@set_authentication_predicate(is_authenticated)
+def increment_play_count(playlist_id, song_id):
+  song = Song.objects.get(id=song_id, playlist__id=playlist_id)
+
+  if not song:
+    raise Exception("Song not found")
+
+  song.play_count += 1
+  song.save()
+
+  return J(song)
