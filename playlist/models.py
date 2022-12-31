@@ -47,6 +47,8 @@ class Song(models.Model):
 
   platform_id = models.CharField(max_length=200)
 
+  play_count = models.IntegerField(default=0)
+
   class SongType(models.TextChoices):
     SPOTIFY = 'spotify', 'Spotify'
     YOUTUBE = 'youtube', 'YouTube'
@@ -68,5 +70,7 @@ class Song(models.Model):
       'length': self.length,
       'cover': self.cover,
       'added_by': self.added_by.toJSON() if recursive else self.added_by.username,
-      'song_type': self.song_type
+      'song_type': self.song_type,
+      'platform_id': self.platform_id,
+      'play_count': self.play_count,
     }
