@@ -11,6 +11,11 @@ django-modern-rpc = "*"
 six = "*"
 django-allauth = "*"
 django-cors-headers = "*"
+pytz = "*"
+channels = {extras = ["daphne"], version = "*"}
+channels-redis = "*"
+django-redis = "*"
+python-dateutil = "*"
 
 [dev-packages]
 

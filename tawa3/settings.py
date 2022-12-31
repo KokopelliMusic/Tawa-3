@@ -32,6 +32,11 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # channels
+    'daphne',
+    'channels',
+
+    # django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,6 +51,7 @@ INSTALLED_APPS = [
     # apps
     'user',
     'playlist',
+    'session',
 ]
 
 
@@ -82,6 +88,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'tawa3.wsgi.application'
+ASGI_APPLICATION = 'tawa3.asgi.application'
 
 
 # Database
@@ -97,6 +104,19 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 
 # Password validation
@@ -147,11 +167,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MODERNRPC_METHODS_MODULES = [
     'playlist.views',
-    'user.views'
+    'user.views',
+    'session.views',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:3001',
     'http://localhost:8000',
 ]
 
@@ -167,3 +189,17 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
     "x-kokopelli-client-type"
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.pubsub.RedisPubSubChannelLayer',
+        'CONFIG': {
+            'hosts': [('redis://localhost:6379')],
+        }
+    }
+}
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass

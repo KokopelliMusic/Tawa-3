@@ -23,6 +23,7 @@ from modernrpc.core import JSONRPC_PROTOCOL
 from modernrpc.views import RPCEntryPoint
 
 urlpatterns = [
+
     path('admin/', admin.site.urls),
     # user
     path('user/', include('user.urls')),

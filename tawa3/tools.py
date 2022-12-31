@@ -5,6 +5,10 @@ def is_authenticated(request):
   return request.user.is_authenticated
 
 
+def is_staff(request):
+  return request.user.is_staff
+
+
 def to_json(obj):
   return obj.toJSON()
 
