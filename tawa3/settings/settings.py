@@ -198,3 +198,5 @@ CHANNEL_LAYERS = {
         }
     }
 }
+
+ROOT_URLCONF = 'tawa3.urls'
